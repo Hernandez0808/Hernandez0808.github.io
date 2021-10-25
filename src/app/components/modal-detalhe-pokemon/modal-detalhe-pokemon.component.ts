@@ -10,48 +10,57 @@ import { PokedexService } from 'src/app/service/pokedex.service';
   styleUrls: ['./modal-detalhe-pokemon.component.css']
 })
 export class ModalDetalhePokemonComponent {
-  public pokemon: Pokemon[];
   public pokemonId = {} as Pokemon;
   public idControle: number;
 
   @Input() idPoke: number;
   @Output() PokeGrafico = {} as Pokemon;
-  @Output() PokeGraficoId = {} as Pokemon;
 
 
-  constructor(config: NgbModalConfig, private modalService: NgbModal, private pokeService: PokedexService, private router: Router) {
-    // customize default values of modals used by this component tree
+  constructor(config: NgbModalConfig, private modalService: NgbModal, private pokeService: PokedexService) {
     config.backdrop = 'static';
     config.keyboard = false;
   }
-  ngOnInit(): void {
-  }
+
   proximo() {
-    console.log(this.idControle)
-    if(150>this.idControle){
+    let anima = document.getElementById("animaItem") as HTMLElement;
+    anima.classList.remove("animaItem");
+    if (this.idControle + 1 == 152){
+      anima.classList.add("animaItem");
+    }
+
+    if(151>this.idControle){
       this.idControle = this.idControle + 1; 
-    this.pokeService.getPokemonByid(this.idControle).subscribe((pokemon: Pokemon) => {
+      this.pokeService.getPokemonByid(this.idControle).subscribe((pokemon: Pokemon) => {
       this.pokemonId = pokemon;
       this.pokemonId.name = this.pokemonId.name[0].toUpperCase() + this.pokemonId.name.substr(1);
-      this.PokeGraficoId = this.pokemonId;
-      console.log("entrou")
+      this.PokeGrafico = this.pokemonId;
+
     });
     }
   }
 
   anterior() {
-    if(this.idControle > 1){
-    this.idControle = this.idControle - 1;
+    let anima = document.getElementById("animaItem") as HTMLElement;
+    anima.classList.remove("animaItem");
+    if (this.idControle - 1 == 0){
+      anima.classList.add("animaItem");
     }
+    if(this.idControle > 1 ){
+    this.idControle = this.idControle - 1;
+    
+    }
+    
     if (this.idControle>0) {
       this.pokeService.getPokemonByid(this.idControle).subscribe((pokemon: Pokemon) => {
         this.pokemonId = pokemon;
         this.pokemonId.name = this.pokemonId.name[0].toUpperCase() + this.pokemonId.name.substr(1);
-        this.PokeGraficoId = this.pokemonId;
+        this.PokeGrafico = this.pokemonId;
       });
      
     }
   }
+
   open(content) {
     this.idControle = this.idPoke;
     this.pokeService.getPokemonByid(this.idPoke).subscribe((pokemon: Pokemon) => {
@@ -59,7 +68,7 @@ export class ModalDetalhePokemonComponent {
       this.pokemonId = pokemon;
       this.pokemonId.name = this.pokemonId.name[0].toUpperCase() + this.pokemonId.name.substr(1);
       this.PokeGrafico = this.pokemonId;
-
+      console.log(this.pokemonId);
     });
 
   }

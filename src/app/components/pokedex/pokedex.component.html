@@ -1,4 +1,5 @@
 <div class="container">
+    
     <div class="row">
         <div class="text-center" style="width: 30rem;">
             <img class="fadeInDown" style="width: 100%;" src="assets/poke-logo.png" alt="Pokemon">
@@ -29,27 +30,43 @@
                                     <a class="nav-link" id="ac2" (click)="alfabeticoAZ()">A - Z</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="ac3" [routerLinkActive]="['active']"
+                                    <a class="nav-link" id="ac3"
                                         (click)="alfabeticoZA()">Z - A</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="ac4" [routerLinkActive]="['active']"
+                                    <a class="nav-link" id="ac4"
                                         (click)="pontosAtributoMaior()">Mais Forte</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="ac5" [routerLinkActive]="['active']"
+                                    <a class="nav-link" id="ac5"
                                         (click)="pontosAtributoMenor()">Mais Fraco</a>
+                                </li>
+                                <li>
+                                    <div class="div-select">
+                                        <!-- <label class="text-white">Filtrar pelo tipo do Pokémon</label>  -->
+                                    <select [(ngModel)]="vazio" (ngModelChange)="selTipo($event)" name="tipos" class="" aria-label="Default select example">
+                                        <option value="inicial" >
+                                            Todos
+                                        </option>
+                                        <option *ngFor="let tipo of tipos" [ngValue]="tipo" >
+                                            {{tipo}}
+                                        </option>
+                                      
+                                        </select>
+                                    </div>
                                 </li>
                             </ul>
                         </div>
                     </nav>
-
+                    
                 </div>
             </div>
         </div>
+    </div>
 
+    
         <div class="row justify-content-lg-center mt-3">
-            <div class="col m-4" *ngFor="let pokemon of poke | filter:pesquisa ">
+            <div class="col m-4" *ngFor="let i = index; let pokemon of poke | filter:pesquisa ">
                 <div class="card " style="width: 18rem;">
                     <img *ngIf="10>pokemon.id" class="card-img-top"
                         src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/00{{pokemon.id}}.png"
@@ -57,15 +74,45 @@
                     <img *ngIf="pokemon.id>=10 && 100 > pokemon.id" class="card-img-top"
                         src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/0{{pokemon.id}}.png"
                         alt="{{pokemon.name}}">
-                    <img *ngIf="pokemon.id>=100" class="card-img-top"
+                    <img *ngIf="pokemon.id>=100" class="card-img-top         p"
                         src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/{{pokemon.id}}.png"
                         alt="{{pokemon.name}}">
                     <div class="card-body">
                         <p class="card-text">{{pokemon.name}}</p>
+                        <div class="d-flex justify-content-center">
+                        <ng-container *ngFor="let pok of pokemon.tipos">
+                        <div class="m-2 mb-4">
+                            <span [ngClass]="{
+          
+                            'poison' : pok.name == 'poison',
+                            'grama': pok.name == 'grass',
+                            'fogo' : pok.name == 'fire',
+                            'agua' : pok.name == 'water',
+                            'bug' : pok.name == 'bug',
+                            'normal' : pok.name == 'normal',
+                            'eletrico' : pok.name == 'electric',
+                            'terra' : pok.name == 'ground',
+                            'lutador' : pok.name == 'fighting',
+                            'psiquico' : pok.name == 'psychic',
+                            'pedra' : pok.name == 'rock',
+                            'voador' : pok.name == 'flying',
+                            'fantasma' : pok.name == 'ghost',
+                            'gelo' : pok.name == 'ice',
+                            'dragao' : pok.name == 'dragon',
+                            'metalico' : pok.name == 'steel',
+                            'noturno': pok.name == 'dark',
+                            'fada' : pok.name == 'fairy'
+                             
+                            }">{{pok.name}}</span>
+                        </div>
+                        </ng-container>
+                    </div>
                         <app-modal-detalhe-pokemon [idPoke]="pokemon.id"></app-modal-detalhe-pokemon>
 
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+        
+    
+</div>
